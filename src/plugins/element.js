@@ -10,6 +10,7 @@ import {
 	Scrollbar,
 	Image,
 } from "element-ui";
+import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
 
 Vue.use(Tabs);
 Vue.use(TabPane);
@@ -20,3 +21,4 @@ Vue.use(Card);
 // Vue.use(Col);
 Vue.use(Scrollbar);
 Vue.use(Image);
+Vue.component(CollapseTransition.name, CollapseTransition);

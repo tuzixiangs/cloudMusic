@@ -13,8 +13,9 @@ import "./assets/font/iconfont.css";
 Vue.config.productionTip = false;
 
 // 创建axios实例并挂载到原型
-axios.defaults.baseURL = "https://autumnfish.cn";
-axios.defaults.timeout = 30 * 1000;
+// axios.defaults.baseURL = "https://autumnfish.cn";
+// axios.defaults.timeout = 30 * 1000;
+// axios.defaults.withCredentials = true;
 //将axios挂载到Vue实例中的$ajax上面,在项目中的任何位置通过this.$http使用
 Vue.prototype.$http = axios;
 

@@ -1,7 +1,7 @@
 <template>
-  <div id="findMusic" class="box">
+  <div id="findMusic">
     <div class="c-search-table beauty-Scroll">
-      <el-scrollbar>
+      <el-scrollbar :native="true">
         <!-- tabs标签栏 -->
         <el-tabs tab-position="top" style="height: 200px;">
           <!-- 个性推荐页 -->
@@ -22,8 +22,32 @@
               </div>
               <!-- 推荐歌单列表 -->
               <div class="songsList">
-                <div class="songsListItem" v-for="item in songsListData" :key="item.id">
-                  <song-list-box :songData="item"></song-list-box>
+                <div class="songsListItem">
+                  <div class="dayRecommendBox" @mouseover="isShow=true" @mouseout="isShow=false">
+                    <div class="dayRecommendBox_week">{{getWeek}}</div>
+                    <div class="dayRecommendBox_day">{{getDay}}</div>
+                    <el-collapse-transition>
+                      <div class="songsListItem-box" v-show="isShow">
+                        <p>根据您的音乐口味生成每日更新</p>
+                      </div>
+                    </el-collapse-transition>
+                  </div>
+                  <div class="dayRecommendBox_title">每日歌曲推荐</div>
+                </div>
+                <div
+                  class="songsListItem"
+                  v-for="item in songsListData"
+                  :key="item.id"
+                  @mouseover="showSongItemBox(item.id)"
+                  @mouseout="activeID= -1"
+                >
+                  <song-list-box :songData="item">
+                    <el-collapse-transition>
+                      <div class="songsListItem-box" v-show="activeID==item.id">
+                        <p>{{item.copywriter}}</p>
+                      </div>
+                    </el-collapse-transition>
+                  </song-list-box>
                 </div>
               </div>
             </el-card>
@@ -39,6 +63,7 @@
 <script>
 import swiper from "components/common/swiper.vue";
 import songListBox from "components/common/songListBox.vue";
+import { get, post } from "../../network/http";
 
 export default {
   name: "FindMusic",
@@ -47,7 +72,11 @@ export default {
       // 轮播图数据
       bannerList: [],
       // 推荐歌单数据
-      songsListData: []
+      songsListData: [],
+      // 获得每个songsListItem-box的ID
+      activeID: -1,
+      // 控制显示
+      isShow: false
     };
   },
   components: {
@@ -59,7 +88,7 @@ export default {
     this.$http.all([that.getBannerList(), that.getSongsList()]).then(
       that.$http.spread((res1, res2) => {
         // console.log(res1);
-        // console.log(res2);
+        console.log(res2);
         if (res1.status !== 200) {
           return console.log(res1.statusText);
         } else if (res2.status !== 200) {
@@ -73,11 +102,35 @@ export default {
   methods: {
     // 获得banner
     async getBannerList() {
-      return await this.$http.get("/banner");
+      return await get("/banner");
     },
     // 获得推荐歌单
     async getSongsList() {
-      return await this.$http.get("/personalized?limit=10");
+      return await get("/personalized?limit=29");
+    },
+    showSongItemBox(id) {
+      this.activeID = id;
+    }
+  },
+  computed: {
+    // 获得星期几
+    getWeek() {
+      let nowDate = new Date();
+      let weekDay = [
+        "星期天",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+      ];
+      return weekDay[nowDate.getDay()];
+    },
+    // 获得现在是几日
+    getDay() {
+      let nowDate = new Date();
+      return nowDate.getDate();
     }
   }
 };
@@ -111,8 +164,55 @@ export default {
   .songsListItem {
     width: 140px;
     height: 195px;
-    // background-color: skyblue;
     margin-bottom: 10px;
+    .songsListItem-box {
+      // display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 48px;
+      width: 100%;
+      font-size: 12px;
+      color: #fff;
+      // padding: 5px;
+      background-color: rgba(0, 0, 0, 0.3);
+      p {
+        padding: 5px 5px 0 7px;
+        line-height: 18px;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        // text-overflow: ellipsis;
+      }
+    }
+    .dayRecommendBox {
+      position: relative;
+      width: 138px;
+      height: 144px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.5);
+      .dayRecommendBox_week {
+        color: #666666;
+        line-height: 40px;
+        font-size: 14px;
+        text-align: center;
+      }
+      .dayRecommendBox_day {
+        color: #c62f2f;
+        font-size: 100px;
+        text-align: center;
+        line-height: 84px;
+      }
+    }
+    .dayRecommendBox_title {
+      padding-top: 5px;
+      width: 140px;
+      height: 39px;
+      line-height: 17px;
+      font-size: 12px;
+      color: #333;
+    }
   }
 }
 

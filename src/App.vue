@@ -255,12 +255,10 @@ export default {
 .main {
   width: 100%;
   height: 570px;
-  // overflow: scroll;
   .listenList {
     float: left;
     width: 200px;
     height: 100%;
-    // border-right: 1px solid rgba(#6190E8;);
     background-color: rgba(255, 255, 255, 0.6);
     .listenList_item_color {
       color: #5c5c5c;

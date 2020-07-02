@@ -1,23 +1,5 @@
 <template>
-  <div>
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div></div>
-      </el-col>
-      <el-col :span="6">
-        <div></div>
-      </el-col>
-      <el-col :span="6">
-        <div></div>
-      </el-col>
-      <el-col :span="6">
-        <div></div>
-      </el-col>
-      <el-col :span="6">
-        <div></div>
-      </el-col>
-    </el-row>
-  </div>
+  <div>我喜欢的音乐模块</div>
 </template>
 
 <script>

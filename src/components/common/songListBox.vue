@@ -7,6 +7,7 @@
         {{isPlayCount}}
       </span>
       <i class="iconfont icon-play"></i>
+
       <slot></slot>
     </div>
     <div class="songListBox_title">
@@ -20,7 +21,10 @@ export default {
   name: "SongListBox",
   props: ["songData"],
   data() {
-    return {};
+    return {
+      // 控制songsListItem-box的隐藏与出现
+      isShow: true
+    };
   },
   computed: {
     isPlayCount() {
@@ -85,6 +89,7 @@ export default {
     line-height: 17px;
     color: #333;
     margin-top: 5px;
+
     span {
       display: -webkit-box;
       overflow: hidden;

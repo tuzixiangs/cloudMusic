@@ -2,7 +2,7 @@
   <div>
     <!-- 轮播图 -->
     <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in dataList" :key="item.encodeId" class="carouselItem">
+      <el-carousel-item v-for="(item,i) in dataList" :key="i" class="carouselItem">
         <a :href="item.url">
           <img :src="item.imageUrl" alt />
         </a>

@@ -1,62 +1,58 @@
 <template>
   <div id="findMusic">
-    <div class="c-search-table beauty-Scroll">
-      <el-scrollbar :native="true">
-        <!-- tabs标签栏 -->
-        <el-tabs tab-position="top" style="height: 200px;">
-          <!-- 个性推荐页 -->
-          <el-tab-pane label="个性推荐">
-            <!-- 轮播图 -->
-            <swiper :dataList="bannerList"></swiper>
-            <!-- 歌单推荐区 -->
-            <el-card :body-style="{padding:'10px'}">
-              <div slot="header">
-                <span style="font-size:18px;">推荐歌单</span>
-                <span
-                  style="float: right; padding: 3px 0; cursor: pointer;font-size:12px"
-                  class="card_header_right_item"
-                >
-                  <span>更多</span>
-                  <i class="el-icon-arrow-right"></i>
-                </span>
-              </div>
-              <!-- 推荐歌单列表 -->
-              <div class="songsList">
-                <div class="songsListItem">
-                  <div class="dayRecommendBox" @mouseover="isShow=true" @mouseout="isShow=false">
-                    <div class="dayRecommendBox_week">{{getWeek}}</div>
-                    <div class="dayRecommendBox_day">{{getDay}}</div>
-                    <el-collapse-transition>
-                      <div class="songsListItem-box" v-show="isShow">
-                        <p>根据您的音乐口味生成每日更新</p>
-                      </div>
-                    </el-collapse-transition>
+    <!-- tabs标签栏 -->
+    <el-tabs tab-position="top" style="height: 200px;">
+      <!-- 个性推荐页 -->
+      <el-tab-pane label="个性推荐">
+        <!-- 轮播图 -->
+        <swiper :dataList="bannerList"></swiper>
+        <!-- 歌单推荐区 -->
+        <el-card :body-style="{padding:'10px'}">
+          <div slot="header">
+            <span style="font-size:18px;">推荐歌单</span>
+            <span
+              style="float: right; padding: 3px 0; cursor: pointer;font-size:12px"
+              class="card_header_right_item"
+            >
+              <span>更多</span>
+              <i class="el-icon-arrow-right"></i>
+            </span>
+          </div>
+          <!-- 推荐歌单列表 -->
+          <div class="songsList">
+            <div class="songsListItem">
+              <div class="dayRecommendBox" @mouseover="isShow=true" @mouseout="isShow=false">
+                <div class="dayRecommendBox_week">{{getWeek}}</div>
+                <div class="dayRecommendBox_day">{{getDay}}</div>
+                <el-collapse-transition>
+                  <div class="songsListItem-box" v-show="isShow">
+                    <p>根据您的音乐口味生成每日更新</p>
                   </div>
-                  <div class="dayRecommendBox_title">每日歌曲推荐</div>
-                </div>
-                <div
-                  class="songsListItem"
-                  v-for="item in songsListData"
-                  :key="item.id"
-                  @mouseover="showSongItemBox(item.id)"
-                  @mouseout="activeID= -1"
-                >
-                  <song-list-box :songData="item">
-                    <el-collapse-transition>
-                      <div class="songsListItem-box" v-show="activeID==item.id">
-                        <p>{{item.copywriter}}</p>
-                      </div>
-                    </el-collapse-transition>
-                  </song-list-box>
-                </div>
+                </el-collapse-transition>
               </div>
-            </el-card>
-          </el-tab-pane>
-          <!-- 歌单页 -->
-          <el-tab-pane label="歌单">歌单</el-tab-pane>
-        </el-tabs>
-      </el-scrollbar>
-    </div>
+              <div class="dayRecommendBox_title">每日歌曲推荐</div>
+            </div>
+            <div
+              class="songsListItem"
+              v-for="(item,index) in songsListData"
+              :key="index"
+              @mouseover="showSongItemBox(index)"
+              @mouseout="activeID= -1"
+            >
+              <song-list-box :songData="item">
+                <el-collapse-transition>
+                  <div class="songsListItem-box" v-show="activeID==index">
+                    <p>{{item.copywriter}}</p>
+                  </div>
+                </el-collapse-transition>
+              </song-list-box>
+            </div>
+          </div>
+        </el-card>
+      </el-tab-pane>
+      <!-- 歌单页 -->
+      <el-tab-pane label="歌单">歌单</el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -84,32 +80,70 @@ export default {
     songListBox
   },
   created() {
-    const that = this;
-    this.$http.all([that.getBannerList(), that.getSongsList()]).then(
-      that.$http.spread((res1, res2) => {
-        // console.log(res1);
-        console.log(res2);
-        if (res1.status !== 200) {
-          return console.log(res1.statusText);
-        } else if (res2.status !== 200) {
-          return console.log(res2.statusText);
-        }
-        that.bannerList = res1.data.banners;
-        that.songsListData = res2.data.result;
-      })
-    );
+    // this.getLogin();
+    this.getData();
   },
   methods: {
+    getLogin() {
+      const that = this;
+      this.$http
+        .post(
+          "https://autumnfish.cn/login?email=xie5598@126.com&password=5201314xie%40"
+        )
+        .then(res => {
+          console.log(res);
+          if (res.status !== 200) {
+            return console.log(res.statusText);
+          } else {
+            console.log("重新登录了");
+            // this.getData();
+            setTimeout(function() {
+              that.getData();
+            }, 2000);
+          }
+        });
+    },
+    getData() {
+      const that = this;
+      this.$http.all([that.getBannerList(), that.getSongsList()]).then(
+        that.$http.spread((res1, res2) => {
+          // console.log(res1);
+          console.log(res2);
+          if (res1.status !== 200) {
+            return console.log(res1.statusText);
+          } else if (res2.status !== 200) {
+            return console.log(res2.statusText);
+          }
+          that.bannerList = res1.data.banners;
+          // 随机获取9个不重复的推荐歌单
+          let recommend = res2.data.recommend;
+          if (recommend.length >= 9) {
+            while (that.songsListData.length < 9) {
+              let i = Math.floor(Math.random() * recommend.length);
+              if (that.songsListData.indexOf(recommend[i]) < 0) {
+                that.songsListData.push(recommend[i]);
+              }
+            }
+          } else {
+            that.songsListData = recommend;
+            that.songsListData.push(recommend[0]);
+          }
+        })
+      );
+    },
     // 获得banner
     async getBannerList() {
-      return await get("/banner");
+      return await get("/banner", {
+        t: Date.parse(new Date())
+      });
     },
     // 获得推荐歌单
     async getSongsList() {
-      return await get("/personalized?limit=29");
+      return await get("/recommend/resource");
     },
-    showSongItemBox(id) {
-      this.activeID = id;
+    // 得到每个要显示的小盒子ID
+    showSongItemBox(index) {
+      this.activeID = index;
     }
   },
   computed: {
@@ -137,6 +171,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#findMusic {
+  height: 100%;
+}
 .card_header_right_item {
   color: #666;
 }

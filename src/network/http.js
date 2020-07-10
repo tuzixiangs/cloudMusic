@@ -1,12 +1,15 @@
 import axios from "axios";
 import QS from "qs";
 
-axios.defaults.baseURL = "https://autumnfish.cn";
-axios.defaults.timeout = 30 * 1000;
-axios.defaults.withCredentials = true;
+const instance = axios.create({
+	baseURL: "https://autumnfish.cn",
+	timeout: 30 * 1000,
+	withCredentials: true,
+	// "content-type": "application/json;charset=UTF-8",
+});
 
 // 请求拦截器
-axios.interceptors.request.use(
+instance.interceptors.request.use(
 	(config) => {
 		return config;
 	},
@@ -16,7 +19,7 @@ axios.interceptors.request.use(
 );
 
 // 响应拦截器
-axios.interceptors.response.use(
+instance.interceptors.response.use(
 	(res) => {
 		return res;
 	},
@@ -32,12 +35,12 @@ axios.interceptors.response.use(
 //  */
 export function get(url, params) {
 	return new Promise((resolve, reject) => {
-		axios
+		instance
 			.get(url, {
 				// 改params，将时间戳作为参数
 				params: {
-					t: Date.parse(new Date()),
-					...params,
+					params,
+					// cookie: this.cookie,
 				},
 			})
 			.then((res) => {
@@ -56,7 +59,7 @@ export function get(url, params) {
 //  */
 export function post(url, params) {
 	return new Promise((resolve, reject) => {
-		axios
+		instance
 			.post(url, QS.stringify(params))
 			.then((res) => {
 				resolve(res);

@@ -29,9 +29,9 @@ export default {
   computed: {
     isPlayCount() {
       // console.log(this.songData);
-      return this.songData.playCount > 100000
-        ? (this.songData.playCount / 10000).toFixed() + "万"
-        : this.songData.playCount;
+      return this.songData.playcount > 100000
+        ? (this.songData.playcount / 10000).toFixed() + "万"
+        : this.songData.playcount;
     }
   }
 };

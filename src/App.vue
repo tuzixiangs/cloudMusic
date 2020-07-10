@@ -21,7 +21,8 @@
         </div>
         <!-- 用户及设置模块 -->
         <div class="header_user">
-          <div class="header_user_login">
+          <!-- 用户登录 -->
+          <div class="header_user_login" @click="showDialog=true">
             <span class="header_user_login_item1">
               <i class="el-icon-user"></i>
             </span>
@@ -81,19 +82,62 @@
         <!-- 主体页面 -->
         <div class="mainPage">
           <!-- 路由站位符 -->
-          <router-view></router-view>
+          <div class="c-search-table beauty-Scroll">
+            <el-scrollbar>
+              <transition>
+                <keep-alive>
+                  <router-view></router-view>
+                </keep-alive>
+              </transition>
+            </el-scrollbar>
+          </div>
         </div>
       </div>
       <div class="footer">
         <div class="musicPlay">
-          <!-- <audio :src="musicSrc" @play="play" @pause="pause" controls="controls" autoplay="autoplay"></audio> -->
+          <!-- 播放控制按钮 -->
+          <div class="playControl">
+            <span class="previousSong" v-if="activePath!=='/privateFm'">
+              <i class="iconfont icon-previous"></i>
+            </span>
+            <span class="startPause" @click="stop">
+              <i class="iconfont icon-bofang1" v-if="play"></i>
+              <i class="iconfont icon-bofang" v-else style="margin-left:3px"></i>
+            </span>
+            <span class="nextSong" @click="nextSong">
+              <i class="iconfont icon-next"></i>
+            </span>
+          </div>
+          <!-- 播放进度 -->
+          <div class="playSchedule" :style="activePath==='/privateFm' ? 'margin-left:50px':''">
+            <div class="progressBarBox">
+              <span class="startTime" style="color:#444;font-size:12px;margin-top:2px">00:00</span>
+              <span class="progressBar"></span>
+              <span class="endTime" style="color:#444;font-size:12px;margin-top:2px">05:00</span>
+            </div>
+            <div class="volume">
+              <i class="iconfont icon-volume" style="font-size:20px;"></i>
+              <span></span>
+            </div>
+          </div>
+          <!-- 播放列表 -->
+          <div class="playList" v-if="activePath!=='/privateFm'">
+            <i class="iconfont icon-orderPlay"></i>
+            <i class="iconfont icon-plist"></i>
+          </div>
         </div>
       </div>
     </div>
+
+    <audio :src="url" @ended="nextSong" ref="audio" autoplay></audio>
+    <!-- 登录对话框 -->
+    <login-page :dialog-visible="showDialog" @dialog-cancel="showDialog=false"></login-page>
   </div>
 </template>
 
 <script>
+import loginPage from "./components/content/loginPage";
+
 export default {
   name: "App",
   data() {
@@ -101,11 +145,38 @@ export default {
       // 要搜索的数据
       search: "",
       // 动态保存激活状态的路由
-      activePath: ""
+      activePath: "",
+      // 控制显示登录窗口
+      showDialog: false,
+      // 音频总时长
+      endTime: ""
     };
   },
-  created() {
-    // console.log(this.$route);
+  components: {
+    loginPage
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    // 下一首
+    nextSong() {
+      this.$store.commit("updatedIndex", this.$store.state.index + 1);
+    },
+    // 暂停播放
+    stop() {
+      this.$store.commit("updatePlay", !this.$store.state.play);
+    }
+  },
+  computed: {
+    // 获取url
+    url() {
+      // console.log(this.$refs.audio.duration);
+      return this.$store.state.url;
+    },
+    // 控制播放
+    play() {
+      return this.$store.state.play;
+    }
   },
   watch: {
     // 动态获取路由
@@ -115,6 +186,20 @@ export default {
         // console.log(this.activePath);
       },
       immediate: true
+    },
+    // 监听play值改变
+    play(val) {
+      let audio = this.$refs.audio;
+      if (val) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    },
+    // 监听url变化
+    url(val) {
+      // console.log(val);
+      return (this.endTime = this.$refs.audio.duration);
     }
   }
 };
@@ -129,7 +214,7 @@ export default {
   transform: translate(-50%, -50%);
   width: 1022px;
   height: 670px;
-  user-select: none;
+  // user-select: none;
 }
 .header {
   width: 100%;
@@ -289,7 +374,90 @@ export default {
   width: 100%;
   height: 50px;
   background-color: rgba(255, 255, 255, 0.5);
-  // border-top: 1px solid #e1e1e2;
+  .musicPlay {
+    display: flex;
+    height: 100%;
+    .playControl {
+      display: flex;
+      // justify-content: space-between;
+      align-items: center;
+      margin: 0 30px;
+      // width: 145px;
+      height: 100%;
+      .previousSong,
+      .nextSong {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: rgba(198, 47, 47, 0.8);
+        cursor: pointer;
+      }
+      .startPause {
+        margin: 0 25px;
+        width: 35px;
+        height: 35px;
+        text-align: center;
+        line-height: 35px;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: rgba(198, 47, 47, 0.8);
+        cursor: pointer;
+        i {
+          font-size: 15px;
+        }
+      }
+      i {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+      }
+    }
+    .playSchedule {
+      display: flex;
+      margin-left: 20px;
+      height: 100%;
+      align-items: center;
+      .progressBarBox {
+        display: flex;
+        align-items: center;
+        span {
+          margin-right: 12px;
+        }
+        .progressBar {
+          width: 400px;
+          height: 5px;
+          border-radius: 5px;
+          background-color: rgba(255, 255, 255, 0.8);
+        }
+      }
+
+      .volume {
+        display: flex;
+        align-items: center;
+        i {
+          margin-right: 5px;
+        }
+        span {
+          width: 100px;
+          height: 5px;
+          border-radius: 5px;
+          background-color: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+    .playList {
+      width: 150px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      i {
+        margin-top: 2px;
+        font-size: 20px;
+      }
+    }
+  }
 }
 
 .isRecommendStyle {
@@ -297,6 +465,7 @@ export default {
   color: #000;
 }
 
+// 修改placeholder字体颜色
 *::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.3);
 }

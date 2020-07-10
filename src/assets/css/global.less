@@ -5,26 +5,40 @@ body {
   /* position: relative; */
 }
 
-#findMusic {
-  height: 100%;
 
-  .c-search-table {
-    width: 100%;
-    height: calc(~"100% - 10px");
-    /*这里我用了计算属性*/
+
+.c-search-table {
+  width: 100%;
+  height: calc(~"100% - 10px");
+  /*这里我用了计算属性*/
+}
+
+.beauty-Scroll {
+  .el-scrollbar {
+    height: 100%;
+    /*此处一定要设置高度，不然内层的计算属性不生效*/
   }
 
-  .beauty-Scroll {
-    .el-scrollbar {
-      height: 100%;
-      /*此处一定要设置高度，不然内层的计算属性不生效*/
-    }
-
-    .el-scrollbar__wrap {
-      width: calc(~"100% + 17px");
-      /*将垂直滚动条挤到可视区域之外*/
-      height: calc(~"100% + 17px");
-      /*将水平滚动条挤到可视区域之外*/
-    }
+  .el-scrollbar__wrap {
+    width: calc(~"100% + 17px");
+    /*将垂直滚动条挤到可视区域之外*/
+    height: calc(~"100% + 17px");
+    /*将水平滚动条挤到可视区域之外*/
   }
+}
+
+// 清除浮动
+.clearfloat {
+  clear: both;
+  height: 0;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }

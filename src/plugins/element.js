@@ -9,6 +9,12 @@ import {
 	// Col,
 	Scrollbar,
 	Image,
+	Dialog,
+	Button,
+	Input,
+	Form,
+	FormItem,
+	Pagination,
 } from "element-ui";
 import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
 
@@ -21,4 +27,10 @@ Vue.use(Card);
 // Vue.use(Col);
 Vue.use(Scrollbar);
 Vue.use(Image);
+Vue.use(Dialog);
+Vue.use(Button);
+Vue.use(Input);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Pagination);
 Vue.component(CollapseTransition.name, CollapseTransition);

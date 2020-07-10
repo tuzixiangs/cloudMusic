@@ -6,6 +6,97 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4433606",
+      "name": "播放列表",
+      "font_class": "plist",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "4517781",
+      "name": "列表循环",
+      "font_class": "llistLoop",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "4517795",
+      "name": "随机播放",
+      "font_class": "randomPlay",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "7421891",
+      "name": "播放列表",
+      "font_class": "orderPlay",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "9203582",
+      "name": "单曲循环",
+      "font_class": "singleLoop",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "10975889",
+      "name": "音量",
+      "font_class": "volume",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "8658248",
+      "name": "播放",
+      "font_class": "bofang1",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "8670152",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "e88c",
+      "unicode_decimal": 59532
+    },
+    {
+      "icon_id": "11316409",
+      "name": "下一首",
+      "font_class": "previous",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "15808757",
+      "name": "下一首",
+      "font_class": "next",
+      "unicode": "e88d",
+      "unicode_decimal": 59533
+    },
+    {
+      "icon_id": "12713506",
+      "name": "点赞",
+      "font_class": "like",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "5996113",
+      "name": "下一曲",
+      "font_class": "icon_play_next",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "13473973",
+      "name": "下一曲",
+      "font_class": "icon_play_previous",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
       "icon_id": "1826192",
       "name": "播放按钮",
       "font_class": "play",
@@ -60,13 +151,6 @@
       "font_class": "pifu",
       "unicode": "e67e",
       "unicode_decimal": 59006
-    },
-    {
-      "icon_id": "15545313",
-      "name": "fm",
-      "font_class": "fm",
-      "unicode": "e876",
-      "unicode_decimal": 59510
     }
   ]
 }
